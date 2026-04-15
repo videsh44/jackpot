@@ -1,0 +1,6 @@
+@use '../../../styles/mixins' as *;
+
+.skeleton {
+  @include skeleton-pulse;
+  border-radius: 6px;
+}

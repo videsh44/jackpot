@@ -1,0 +1,427 @@
+@use '../../../styles/game-variables' as *;
+@use '../../../styles/variables' as vars;
+@use '../../../styles/mixins' as *;
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: $game-bg-base;
+  font-family: $game-font-body;
+  color: $game-text;
+
+  @include respond-to(md) {
+    flex-direction: row;
+    min-height: 580px;
+  }
+}
+
+// Left Panel — bottom on mobile, left on desktop
+.panel {
+  width: 100%;
+  order: 2;
+  background: $game-bg-panel;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-top: 1px solid $game-bg-container;
+
+  @include respond-to(md) {
+    width: 280px;
+    order: unset;
+    flex-shrink: 0;
+    padding: 24px;
+    gap: 24px;
+    border-top: none;
+    border-right: 1px solid $game-bg-container;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  @include respond-to(md) {
+    gap: 8px;
+  }
+}
+
+.label {
+  font-family: $game-font-body;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: $game-text-dim;
+}
+
+.inputGroup {
+  position: relative;
+}
+
+.prefix {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: $game-secondary;
+  font-weight: 900;
+  font-size: 16px;
+}
+
+.input {
+  width: 100%;
+  background: $game-bg-lowest;
+  border: 2px solid transparent;
+  border-radius: $game-radius-lg;
+  padding: 12px 14px 12px 32px;
+  font-family: $game-font-headline;
+  font-size: 16px;
+  font-weight: 700;
+  color: $game-text;
+  outline: none;
+  transition: border-color 0.2s;
+  -moz-appearance: textfield;
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+  }
+
+  &:focus {
+    border-color: $game-secondary;
+  }
+
+  @include respond-to(md) {
+    padding: 14px 14px 14px 32px;
+    font-size: 18px;
+  }
+}
+
+.quickButtons {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+
+  button {
+    flex: 1;
+    background: $game-bg-highest;
+    border: none;
+    border-radius: $game-radius-sm;
+    padding: 7px;
+    font-size: 10px;
+    font-weight: 700;
+    color: $game-text-dim;
+    cursor: pointer;
+    font-family: $game-font-body;
+    transition: background 0.2s;
+
+    &:hover {
+      background: $game-bg-bright;
+      color: $game-text;
+    }
+  }
+}
+
+.riskToggle {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  background: $game-bg-lowest;
+  padding: 4px;
+  border-radius: $game-radius-lg;
+}
+
+.riskBtn {
+  padding: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: $game-font-body;
+  border: none;
+  border-radius: $game-radius-md;
+  background: $game-bg-highest;
+  color: $game-text-dim;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    color: $game-text;
+  }
+}
+
+.riskActive {
+  background: $game-secondary;
+  color: $game-text;
+  box-shadow: 0 0 20px rgba($game-secondary, 0.3);
+}
+
+.select {
+  width: 100%;
+  background: $game-bg-lowest;
+  border: 2px solid transparent;
+  border-radius: $game-radius-lg;
+  padding: 10px 14px;
+  font-family: $game-font-body;
+  font-size: 13px;
+  color: $game-text;
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+
+  &:focus {
+    border-color: $game-secondary;
+  }
+}
+
+.panelFooter {
+  margin-top: 8px;
+
+  @include respond-to(md) {
+    margin-top: auto;
+  }
+}
+
+.dropButton {
+  width: 100%;
+  background: $game-secondary-dim;
+  border: none;
+  border-radius: $game-radius-full;
+  padding: 14px;
+  font-family: $game-font-headline;
+  font-size: 16px;
+  font-weight: 900;
+  color: $game-text;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  transition: all 0.2s;
+  box-shadow: 0 0 20px rgba($game-secondary-dim, 0.3);
+
+  &:hover:not(:disabled) {
+    background: $game-secondary;
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.95);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  @include respond-to(md) {
+    padding: 20px;
+    font-size: 22px;
+  }
+}
+
+// Main Game Area — top on mobile, right on desktop
+.gameArea {
+  flex: 1;
+  order: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: $game-bg-lowest;
+  padding: 12px;
+  overflow: hidden;
+  min-height: 320px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    background: rgba($game-secondary, 0.06);
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+  }
+
+  @include respond-to(md) {
+    order: unset;
+    padding: 16px;
+    min-height: unset;
+
+    &::before {
+      width: 400px;
+      height: 400px;
+    }
+  }
+}
+
+.canvasWrap {
+  width: 100%;
+  max-width: 680px;
+  aspect-ratio: 680 / 520;
+  border-radius: $game-radius-md;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+
+  canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+
+.multiplierRef {
+  display: none;
+}
+
+// Overlays
+.latestWin {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  text-align: right;
+  z-index: 2;
+}
+
+.latestWinLabel {
+  display: block;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: $game-text-dim;
+
+  @include respond-to(md) {
+    font-size: 10px;
+  }
+}
+
+.latestWinValue {
+  display: block;
+  font-family: $game-font-headline;
+  font-size: 32px;
+  font-weight: 900;
+  color: $game-secondary;
+  text-shadow: 0 0 20px rgba($game-secondary, 0.3);
+  line-height: 1;
+
+  @include respond-to(md) {
+    font-size: 48px;
+  }
+}
+
+.balanceTag {
+  position: absolute;
+  top: 12px;
+  left: 16px;
+  z-index: 2;
+}
+
+.balanceLabel {
+  display: block;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: $game-text-dim;
+
+  @include respond-to(md) {
+    font-size: 10px;
+  }
+}
+
+.balanceValue {
+  display: block;
+  font-family: $game-font-headline;
+  font-size: 16px;
+  font-weight: 700;
+  color: $game-primary;
+
+  @include respond-to(md) {
+    font-size: 20px;
+  }
+}
+
+// Live History
+.history {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
+  height: 36px;
+  background: rgba($game-bg-high, 0.6);
+  backdrop-filter: blur(12px);
+  border-radius: $game-radius-lg;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  gap: 8px;
+  z-index: 2;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  @include respond-to(md) {
+    height: 44px;
+    padding: 0 16px;
+    gap: 12px;
+  }
+}
+
+.historyLabel {
+  flex-shrink: 0;
+  font-size: 9px;
+  font-weight: 900;
+  color: $game-secondary;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+
+  @include respond-to(md) {
+    font-size: 10px;
+  }
+}
+
+.historyItems {
+  display: flex;
+  gap: 6px;
+  overflow: hidden;
+
+  @include respond-to(md) {
+    gap: 8px;
+  }
+}
+
+.historyHigh {
+  padding: 3px 8px;
+  background: rgba($game-secondary, 0.2);
+  border: 1px solid rgba($game-secondary, 0.3);
+  border-radius: $game-radius-full;
+  font-size: 10px;
+  font-weight: 700;
+  color: $game-secondary;
+  white-space: nowrap;
+
+  @include respond-to(md) {
+    padding: 4px 12px;
+    font-size: 11px;
+  }
+}
+
+.historyNormal {
+  padding: 3px 8px;
+  background: $game-bg-highest;
+  border-radius: $game-radius-full;
+  font-size: 10px;
+  font-weight: 700;
+  color: $game-text-dim;
+  white-space: nowrap;
+
+  @include respond-to(md) {
+    padding: 4px 12px;
+    font-size: 11px;
+  }
+}

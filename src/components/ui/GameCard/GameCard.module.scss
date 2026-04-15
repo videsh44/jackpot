@@ -1,0 +1,66 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  background: $bg-card;
+  border: $card-border-width solid $border-color;
+  border-radius: $radius-md;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+
+    .favoriteWrapper {
+      opacity: 1;
+    }
+  }
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+}
+
+.image {
+  object-fit: cover;
+  border-radius: 3px;
+}
+
+.favoriteWrapper {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px;
+}
+
+.name {
+  @include text-ellipsis;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  color: $text-primary;
+}
+
+.vendor {
+  @include text-ellipsis;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 14px;
+  color: $text-secondary;
+}

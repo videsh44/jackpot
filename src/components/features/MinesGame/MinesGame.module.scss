@@ -1,0 +1,573 @@
+@use '../../../styles/game-variables' as *;
+@use '../../../styles/variables' as vars;
+@use '../../../styles/mixins' as *;
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: $game-bg-base;
+  font-family: $game-font-body;
+  color: $game-text;
+
+  @include respond-to(md) {
+    flex-direction: row;
+    min-height: 580px;
+  }
+}
+
+// Center Board Area — top on mobile
+.boardArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  position: relative;
+  background: $game-bg-base;
+  order: 1;
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 50%;
+    height: 50%;
+    background: rgba($game-tertiary, 0.04);
+    border-radius: 50%;
+    filter: blur(100px);
+    pointer-events: none;
+  }
+
+  @include respond-to(md) {
+    padding: 32px;
+    order: unset;
+  }
+}
+
+.boardHeader {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+
+  @include respond-to(md) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 0;
+    margin-bottom: 32px;
+  }
+}
+
+.title {
+  font-family: $game-font-headline;
+  font-size: 24px;
+  font-weight: 900;
+  font-style: italic;
+  color: $game-tertiary;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin: 0;
+
+  @include respond-to(md) {
+    font-size: 36px;
+  }
+}
+
+.subtitle {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: $game-text-dim;
+  margin: 4px 0 0;
+
+  @include respond-to(md) {
+    font-size: 12px;
+  }
+}
+
+.multDisplay {
+  text-align: left;
+
+  @include respond-to(md) {
+    text-align: right;
+  }
+}
+
+.multValue {
+  display: block;
+  font-family: $game-font-headline;
+  font-size: 22px;
+  font-weight: 700;
+  color: $game-tertiary;
+
+  @include respond-to(md) {
+    font-size: 28px;
+  }
+}
+
+.multLabel {
+  display: block;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: $game-text-dim;
+
+  @include respond-to(md) {
+    font-size: 10px;
+  }
+}
+
+// 5x5 Grid
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 1;
+  padding: 12px;
+  background: $game-bg-panel;
+  border-radius: $game-radius-lg;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  position: relative;
+  z-index: 1;
+
+  @include respond-to(sm) {
+    gap: 8px;
+    max-width: 380px;
+  }
+
+  @include respond-to(md) {
+    gap: 10px;
+    max-width: 420px;
+    padding: 16px;
+  }
+}
+
+.tile {
+  aspect-ratio: 1;
+  background: $game-bg-high;
+  border: none;
+  border-radius: $game-radius-md;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), transparent);
+    opacity: 0.5;
+  }
+
+  &:hover:not(:disabled) {
+    background: $game-bg-highest;
+    box-shadow: 0 0 20px rgba($game-tertiary, 0.15);
+  }
+
+  &:disabled {
+    cursor: default;
+  }
+}
+
+.hiddenDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 2px solid rgba($game-text-dim, 0.15);
+  transition: border-color 0.2s;
+
+  .tile:hover:not(:disabled) & {
+    border-color: rgba($game-tertiary, 0.3);
+  }
+
+  @include respond-to(md) {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+.gem {
+  background: rgba($game-tertiary-dim, 0.15) !important;
+  border: 1px solid rgba($game-tertiary, 0.3);
+}
+
+.gemIcon {
+  font-size: 20px;
+  color: $game-tertiary;
+  text-shadow: 0 0 12px rgba($game-tertiary, 0.5);
+
+  @include respond-to(md) {
+    font-size: 28px;
+  }
+}
+
+.mine {
+  background: rgba($game-error, 0.15) !important;
+  border: 1px solid rgba($game-error, 0.3);
+}
+
+.mineIcon {
+  font-size: 20px;
+  color: $game-error;
+  text-shadow: 0 0 12px rgba($game-error, 0.5);
+
+  @include respond-to(md) {
+    font-size: 28px;
+  }
+}
+
+.resultBanner {
+  margin-top: 12px;
+  padding: 10px 16px;
+  border-radius: $game-radius-full;
+  font-family: $game-font-headline;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  z-index: 1;
+
+  @include respond-to(md) {
+    margin-top: 20px;
+    padding: 12px 24px;
+    font-size: 14px;
+  }
+}
+
+.resultWon {
+  background: rgba($game-tertiary-dim, 0.15);
+  color: $game-tertiary;
+  border: 1px solid rgba($game-tertiary, 0.3);
+}
+
+.resultLost {
+  background: rgba($game-error, 0.15);
+  color: $game-error;
+  border: 1px solid rgba($game-error, 0.3);
+}
+
+// Right Sidebar — bottom on mobile
+.sidebar {
+  width: 100%;
+  order: 2;
+  background: $game-bg-panel;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border-top: 1px solid rgba($game-outline-variant, 0.1);
+  overflow-y: auto;
+
+  @include respond-to(md) {
+    width: 320px;
+    order: unset;
+    padding: 28px;
+    gap: 20px;
+    border-top: none;
+    border-left: 1px solid rgba($game-outline-variant, 0.1);
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  @include respond-to(md) {
+    gap: 10px;
+  }
+}
+
+.label {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: $game-text-dim;
+}
+
+.inputGroup {
+  position: relative;
+}
+
+.prefix {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: $game-tertiary;
+  font-weight: 900;
+  font-size: 16px;
+}
+
+.input {
+  width: 100%;
+  background: $game-bg-lowest;
+  border: 1px solid rgba($game-outline-variant, 0.3);
+  border-radius: $game-radius-lg;
+  padding: 12px 14px 12px 36px;
+  font-family: $game-font-headline;
+  font-size: 16px;
+  font-weight: 700;
+  color: $game-text;
+  outline: none;
+  transition: border-color 0.2s;
+  -moz-appearance: textfield;
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+  }
+
+  &:focus {
+    border-color: $game-tertiary;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  @include respond-to(md) {
+    padding: 14px 14px 14px 36px;
+    font-size: 18px;
+  }
+}
+
+.quickButtons {
+  display: flex;
+  gap: 4px;
+
+  button {
+    flex: 1;
+    background: $game-bg-highest;
+    border: none;
+    border-radius: $game-radius-sm;
+    padding: 7px;
+    font-size: 10px;
+    font-weight: 700;
+    color: $game-text-dim;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-family: $game-font-body;
+    transition: all 0.2s;
+
+    &:hover:not(:disabled) {
+      background: $game-bg-bright;
+      color: $game-text;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.mineHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mineValue {
+  font-family: $game-font-headline;
+  font-size: 16px;
+  font-weight: 700;
+  color: $game-tertiary;
+}
+
+.mineGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+
+  @include respond-to(md) {
+    gap: 8px;
+  }
+}
+
+.mineBtn {
+  padding: 10px;
+  background: $game-bg-highest;
+  border: 1px solid rgba($game-outline-variant, 0.3);
+  border-radius: $game-radius-md;
+  font-family: $game-font-headline;
+  font-size: 14px;
+  font-weight: 700;
+  color: $game-text-dim;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover:not(:disabled) {
+    border-color: rgba($game-tertiary, 0.4);
+    color: $game-text;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  @include respond-to(md) {
+    padding: 12px;
+    font-size: 15px;
+  }
+}
+
+.mineActive {
+  border-color: $game-tertiary !important;
+  color: $game-tertiary !important;
+}
+
+.actionButton {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: $game-radius-full;
+  font-family: $game-font-headline;
+  font-size: 16px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: #004621;
+  background: linear-gradient(135deg, $game-tertiary-dim, $game-tertiary);
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 0 20px rgba($game-tertiary-dim, 0.3);
+
+  &:hover:not(:disabled) {
+    transform: scale(1.02);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.95);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  @include respond-to(md) {
+    padding: 20px;
+    font-size: 18px;
+  }
+}
+
+.statsPanel {
+  background: $game-bg-container;
+  padding: 14px;
+  border-radius: $game-radius-xl;
+  border: 1px solid rgba($game-outline-variant, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  @include respond-to(md) {
+    padding: 20px;
+    gap: 12px;
+    margin-top: auto;
+  }
+}
+
+.statRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.statLabel {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: $game-text-dim;
+}
+
+.statGreen {
+  font-family: $game-font-headline;
+  font-size: 14px;
+  font-weight: 900;
+  color: $game-tertiary;
+
+  @include respond-to(md) {
+    font-size: 16px;
+  }
+}
+
+.statHighlight {
+  font-family: $game-font-headline;
+  font-size: 14px;
+  font-weight: 900;
+  color: $game-tertiary;
+
+  @include respond-to(md) {
+    font-size: 16px;
+  }
+}
+
+.statNormal {
+  font-family: $game-font-headline;
+  font-size: 13px;
+  font-weight: 700;
+  color: $game-text;
+
+  @include respond-to(md) {
+    font-size: 14px;
+  }
+}
+
+.fairness {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  padding: 12px;
+  border-radius: $game-radius-lg;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+
+  @include respond-to(md) {
+    gap: 12px;
+    padding: 14px;
+  }
+}
+
+.fairnessIcon {
+  font-size: 16px;
+  color: $game-tertiary;
+
+  @include respond-to(md) {
+    font-size: 18px;
+  }
+}
+
+.fairnessTitle {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: $game-tertiary;
+}
+
+.fairnessHash {
+  display: block;
+  font-size: 9px;
+  color: $game-text-dim;
+  margin-top: 2px;
+}

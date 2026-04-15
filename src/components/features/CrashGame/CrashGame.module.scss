@@ -1,0 +1,502 @@
+@use '../../../styles/game-variables' as *;
+@use '../../../styles/variables' as vars;
+@use '../../../styles/mixins' as *;
+
+.layout {
+  width: 100%;
+  height: 100%;
+  background: $game-bg-base;
+  font-family: $game-font-body;
+  color: $game-text;
+}
+
+.graphArea {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.graphContainer {
+  flex: 1;
+  position: relative;
+  background: $game-bg-lowest;
+  border-radius: $game-radius-md;
+  margin: 8px;
+  overflow: hidden;
+  border: 1px solid rgba($game-bg-highest, 0.5);
+  min-height: 200px;
+
+  @include respond-to(md) {
+    border-radius: $game-radius-lg;
+    margin: 16px 16px 0;
+    min-height: unset;
+  }
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+// Rocket element - positioned via JS
+.rocket {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  transform: translate(-50%, -50%) rotate(-45deg);
+  transition: opacity 0.3s;
+  filter: drop-shadow(0 0 12px $game-primary) drop-shadow(0 0 24px rgba($game-primary, 0.4));
+}
+
+.rocketIcon {
+  width: 28px;
+  height: 28px;
+
+  @include respond-to(md) {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+.rocketTrail {
+  position: absolute;
+  z-index: 4;
+  pointer-events: none;
+  width: 40px;
+  height: 60px;
+  transform: translate(-20%, -20%) rotate(-45deg);
+  background: linear-gradient(
+    to bottom,
+    rgba($game-primary, 0.3),
+    rgba($game-primary, 0.1),
+    transparent
+  );
+  filter: blur(8px);
+  border-radius: 50%;
+  transition: opacity 0.3s;
+
+  @include respond-to(md) {
+    width: 50px;
+    height: 80px;
+  }
+}
+
+.multiplierOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.multiplierText {
+  font-family: $game-font-headline;
+  font-size: 56px;
+  font-weight: 900;
+  font-style: italic;
+  color: $game-primary;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  text-shadow: 0 0 30px rgba($game-primary, 0.4);
+  user-select: none;
+
+  @include respond-to(md) {
+    font-size: 96px;
+  }
+}
+
+.crashed {
+  color: $game-error;
+  text-shadow: 0 0 30px rgba($game-error, 0.4);
+}
+
+.won {
+  color: $game-tertiary-dim;
+  text-shadow: 0 0 30px rgba($game-tertiary-dim, 0.4);
+}
+
+.multiplierLabel {
+  font-family: $game-font-headline;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: $game-text-dim;
+  margin-top: 4px;
+  text-align: center;
+  padding: 0 16px;
+
+  @include respond-to(md) {
+    font-size: 14px;
+    letter-spacing: 0.2em;
+  }
+}
+
+.liveBadge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  background: $game-bg-high;
+  border-radius: $game-radius-full;
+  border: 1px solid rgba($game-primary, 0.2);
+  font-size: 9px;
+  font-weight: 700;
+  color: $game-primary;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  z-index: 3;
+
+  @include respond-to(md) {
+    top: 16px;
+    left: 16px;
+    padding: 6px 12px;
+    font-size: 10px;
+  }
+}
+
+.liveDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: $game-primary-dim;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.recentBar {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+  z-index: 3;
+
+  @include respond-to(md) {
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    gap: 8px;
+  }
+}
+
+.recentLabel {
+  flex-shrink: 0;
+  font-size: 9px;
+  font-weight: 900;
+  color: $game-text-dim;
+  background: $game-bg-highest;
+  padding: 3px 8px;
+  border-radius: $game-radius-sm;
+  border: 1px solid rgba($game-bg-highest, 0.3);
+
+  @include respond-to(md) {
+    font-size: 10px;
+    padding: 4px 10px;
+  }
+}
+
+.recentChip {
+  padding: 3px 8px;
+  background: $game-bg-high;
+  border: 1px solid;
+  border-radius: $game-radius-sm;
+  font-size: 10px;
+  font-weight: 700;
+  font-style: italic;
+  white-space: nowrap;
+
+  @include respond-to(md) {
+    padding: 4px 10px;
+    font-size: 11px;
+  }
+}
+
+// Bet Console
+.betConsole {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+
+  @include respond-to(md) {
+    flex-direction: row;
+    gap: 16px;
+    padding: 16px;
+    min-height: 140px;
+  }
+}
+
+.betMain {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: $game-bg-panel;
+  border-radius: $game-radius-lg;
+  padding: 14px;
+  border: 1px solid rgba($game-bg-highest, 0.5);
+
+  @include respond-to(md) {
+    flex-direction: row;
+    gap: 20px;
+    padding: 20px;
+  }
+}
+
+.betField {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.betFieldHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: $game-text-dim;
+}
+
+.quickBtns {
+  display: flex;
+  gap: 4px;
+
+  button {
+    padding: 4px 8px;
+    font-size: 10px;
+    font-weight: 700;
+    background: $game-bg-highest;
+    border: none;
+    border-radius: $game-radius-sm;
+    color: $game-text-dim;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-family: $game-font-body;
+    transition: all 0.2s;
+
+    &:hover {
+      background: $game-bg-bright;
+      color: $game-text;
+    }
+  }
+}
+
+.wagerInput {
+  position: relative;
+
+  input {
+    width: 100%;
+    background: $game-bg-lowest;
+    border: none;
+    border-radius: $game-radius-md;
+    padding: 10px 50px 10px 14px;
+    font-family: $game-font-headline;
+    font-size: 16px;
+    font-weight: 700;
+    color: $game-text;
+    outline: none;
+    -moz-appearance: textfield;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 1px $game-primary-dim;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+    }
+
+    @include respond-to(md) {
+      padding: 12px 50px 12px 16px;
+      font-size: 20px;
+    }
+  }
+}
+
+.currency {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  font-weight: 700;
+  color: $game-text-dim;
+
+  @include respond-to(md) {
+    right: 16px;
+    font-size: 12px;
+  }
+}
+
+.betFieldSmall {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  @include respond-to(md) {
+    width: 200px;
+  }
+}
+
+.cashoutInput {
+  width: 100%;
+  background: $game-bg-lowest;
+  border: none;
+  border-radius: $game-radius-md;
+  padding: 10px 14px;
+  font-family: $game-font-headline;
+  font-size: 16px;
+  font-weight: 700;
+  color: $game-text;
+  outline: none;
+  -moz-appearance: textfield;
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 1px $game-primary-dim;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  @include respond-to(md) {
+    padding: 12px 16px;
+    font-size: 20px;
+  }
+}
+
+.betButton {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: $game-radius-full;
+  font-family: $game-font-headline;
+  font-size: 14px;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: -0.02em;
+  color: $game-bg-base;
+  background: linear-gradient(135deg, $game-primary-dim, $game-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 0 20px rgba($game-primary, 0.3);
+  margin-top: auto;
+
+  &:hover:not(:disabled) {
+    transform: scale(1.02);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.95);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  @include respond-to(md) {
+    padding: 14px;
+    font-size: 16px;
+  }
+}
+
+.betStats {
+  width: 100%;
+  background: $game-bg-panel;
+  border-radius: $game-radius-lg;
+  padding: 14px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  gap: 12px;
+  border: 1px solid rgba($game-bg-highest, 0.5);
+
+  @include respond-to(md) {
+    width: 240px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
+    padding: 20px;
+  }
+}
+
+.statRow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+
+  @include respond-to(md) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.statLabel {
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: $game-text-dim;
+
+  @include respond-to(md) {
+    font-size: 10px;
+  }
+}
+
+.statPrimary {
+  font-family: $game-font-headline;
+  font-size: 15px;
+  font-weight: 700;
+  color: $game-primary;
+
+  @include respond-to(md) {
+    font-size: 18px;
+  }
+}
+
+.statGreen {
+  font-family: $game-font-headline;
+  font-size: 15px;
+  font-weight: 700;
+  color: $game-tertiary-dim;
+
+  @include respond-to(md) {
+    font-size: 18px;
+  }
+}

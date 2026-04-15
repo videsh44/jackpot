@@ -1,0 +1,610 @@
+@use '../../../styles/game-variables' as *;
+@use '../../../styles/variables' as vars;
+@use '../../../styles/mixins' as *;
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: $game-bg-base;
+  font-family: $game-font-body;
+  color: $game-text;
+
+  @include respond-to(md) {
+    flex-direction: row;
+    min-height: 580px;
+  }
+}
+
+// Game Area
+.gameArea {
+  flex: 1;
+  order: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 16px;
+  position: relative;
+  overflow: hidden;
+
+  @include respond-to(md) {
+    padding: 32px;
+    order: unset;
+  }
+}
+
+.glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 400px;
+  background: rgba($game-secondary, 0.04);
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+
+  @include respond-to(md) {
+    width: 600px;
+    height: 600px;
+  }
+}
+
+.title {
+  font-family: $game-font-headline;
+  font-size: 28px;
+  font-weight: 800;
+  font-style: italic;
+  letter-spacing: -0.04em;
+  background: linear-gradient(90deg, $game-text, $game-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 20px;
+  position: relative;
+  z-index: 1;
+
+  @include respond-to(md) {
+    font-size: 40px;
+    margin-bottom: 32px;
+  }
+}
+
+// Die
+.dieWrap {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  z-index: 1;
+  transition: transform 0.5s;
+
+  &:hover {
+    transform: scale(1.08);
+  }
+
+  @include respond-to(md) {
+    width: 180px;
+    height: 180px;
+  }
+}
+
+.dieRolling {
+  animation: diceShake 0.1s infinite;
+}
+
+@keyframes diceShake {
+  0%, 100% { transform: rotate(0deg) scale(1.05); }
+  25% { transform: rotate(4deg) scale(1.08); }
+  75% { transform: rotate(-4deg) scale(1.02); }
+}
+
+.dieGlow {
+  position: absolute;
+  inset: -20px;
+  background: rgba($game-secondary, 0.15);
+  border-radius: 50%;
+  filter: blur(40px);
+}
+
+.die {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: $game-bg-highest;
+  border-radius: 30px;
+  border: 2px solid rgba($game-secondary, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  filter: drop-shadow(0 0 15px $game-secondary);
+
+  @include respond-to(md) {
+    border-radius: 40px;
+  }
+}
+
+.dieOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba($game-secondary, 0.2), transparent);
+  border-radius: inherit;
+}
+
+.dotGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 8px;
+  width: 80px;
+  height: 80px;
+  position: relative;
+  z-index: 1;
+
+  @include respond-to(md) {
+    gap: 12px;
+    width: 100px;
+    height: 100px;
+  }
+}
+
+.dotCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: $game-secondary;
+  box-shadow: 0 0 12px rgba($game-secondary, 0.8);
+
+  @include respond-to(md) {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+// Result
+.resultWrap {
+  margin: 16px 0;
+  z-index: 1;
+
+  @include respond-to(md) {
+    margin: 24px 0;
+  }
+}
+
+.resultNum {
+  font-family: $game-font-headline;
+  font-size: 56px;
+  font-weight: 900;
+  color: $game-text;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+
+  @include respond-to(md) {
+    font-size: 72px;
+  }
+}
+
+.winText {
+  color: $game-tertiary;
+  text-shadow: 0 0 20px rgba($game-tertiary, 0.4);
+}
+
+.loseText {
+  color: $game-error;
+  text-shadow: 0 0 20px rgba($game-error, 0.4);
+}
+
+// Slider Panel
+.sliderPanel {
+  width: 100%;
+  max-width: 560px;
+  background: $game-bg-panel;
+  padding: 20px;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  z-index: 1;
+
+  @include respond-to(md) {
+    padding: 28px;
+    border-radius: 2rem;
+  }
+}
+
+.sliderHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.statRight {
+  text-align: right;
+}
+
+.statLabel {
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 700;
+  color: $game-text-dim;
+}
+
+.statPrimary {
+  display: block;
+  font-family: $game-font-headline;
+  font-size: 20px;
+  font-weight: 700;
+  color: $game-primary;
+
+  @include respond-to(md) {
+    font-size: 24px;
+  }
+}
+
+.statGreen {
+  display: block;
+  font-family: $game-font-headline;
+  font-size: 20px;
+  font-weight: 700;
+  color: $game-tertiary;
+
+  @include respond-to(md) {
+    font-size: 24px;
+  }
+}
+
+// Slider
+.sliderTrack {
+  position: relative;
+  width: 100%;
+  height: 14px;
+  background: $game-bg-lowest;
+  border-radius: $game-radius-full;
+  overflow: visible;
+  margin-bottom: 16px;
+
+  @include respond-to(md) {
+    height: 16px;
+  }
+}
+
+.sliderFill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(90deg, $game-secondary-dim, $game-secondary);
+  border-radius: $game-radius-full;
+  box-shadow: 0 0 12px rgba($game-secondary, 0.4);
+  transition: width 0.1s;
+}
+
+.sliderInput {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  z-index: 2;
+  margin: 0;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px;
+    height: 22px;
+    background: $game-primary;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 12px rgba($game-primary, 0.6);
+    border: 3px solid $game-bg-base;
+  }
+
+  &::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    background: $game-primary;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 12px rgba($game-primary, 0.6);
+    border: 3px solid $game-bg-base;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.sliderFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: $game-bg-lowest;
+  padding: 12px 16px;
+  border-radius: $game-radius-lg;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footerCell, .footerCellRight {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.footerCellRight {
+  align-items: center;
+}
+
+.footerLabel {
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: $game-text-dim;
+}
+
+.footerValue {
+  font-family: $game-font-headline;
+  font-size: 18px;
+  font-weight: 700;
+  color: $game-text;
+}
+
+.footerProfit {
+  font-family: $game-font-headline;
+  font-size: 18px;
+  font-weight: 700;
+  color: $game-tertiary;
+}
+
+.swapBtn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: $game-primary;
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform 0.2s;
+
+  &:hover:not(:disabled) {
+    transform: scale(1.2);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+// Right Sidebar
+.sidebar {
+  width: 100%;
+  order: 2;
+  background: $game-bg-panel;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+
+  @include respond-to(md) {
+    width: 340px;
+    order: unset;
+    border-top: none;
+    border-left: 1px solid rgba(255, 255, 255, 0.05);
+  }
+}
+
+.betSection {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  @include respond-to(md) {
+    padding: 24px;
+    gap: 20px;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fieldRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: $game-text-dim;
+}
+
+.balHint {
+  font-size: 10px;
+  font-weight: 700;
+  color: $game-primary;
+}
+
+.inputRow {
+  display: flex;
+  align-items: center;
+  background: $game-bg-lowest;
+  border-radius: $game-radius-lg;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 4px;
+  transition: border-color 0.2s;
+
+  &:focus-within {
+    border-color: $game-primary;
+  }
+}
+
+.betInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  font-family: $game-font-headline;
+  font-size: 16px;
+  font-weight: 700;
+  color: $game-text;
+  padding: 8px 12px;
+  outline: none;
+  min-width: 0;
+  -moz-appearance: textfield;
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  @include respond-to(md) {
+    font-size: 18px;
+  }
+}
+
+.quickBtns {
+  display: flex;
+  gap: 4px;
+  padding-right: 4px;
+
+  button {
+    padding: 8px 12px;
+    background: $game-bg-highest;
+    border: none;
+    border-radius: $game-radius-md;
+    font-size: 11px;
+    font-weight: 700;
+    color: $game-text-dim;
+    cursor: pointer;
+    font-family: $game-font-body;
+    transition: all 0.2s;
+
+    &:hover:not(:disabled) {
+      background: $game-bg-bright;
+      color: $game-text;
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.rollBtn {
+  width: 100%;
+  padding: 18px;
+  border: none;
+  border-radius: $game-radius-full;
+  font-family: $game-font-headline;
+  font-size: 18px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: $game-bg-base;
+  background: linear-gradient(90deg, $game-primary-dim, $game-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 0 30px rgba($game-primary, 0.4);
+
+  &:hover:not(:disabled) {
+    transform: scale(1.02);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.95);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+// History
+.historySection {
+  flex: 1;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 16px;
+
+  @include respond-to(md) {
+    padding: 24px;
+  }
+}
+
+.historyTitle {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 800;
+  color: $game-text-dim;
+  margin: 0 0 12px;
+}
+
+.historyList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.historyItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: $game-bg-container;
+  border-radius: $game-radius-lg;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.historyLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.historyDie {
+  font-size: 16px;
+}
+
+.historyRoll {
+  font-size: 12px;
+  font-weight: 700;
+  color: $game-text;
+}
+
+.historyWin {
+  font-size: 12px;
+  font-weight: 700;
+  color: $game-tertiary;
+}
+
+.historyLoss {
+  font-size: 12px;
+  font-weight: 700;
+  color: $game-error;
+}

@@ -1,0 +1,28 @@
+@use '../../../styles/variables' as *;
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 12px;
+  border: 2px solid $border-color;
+  border-radius: $radius-md;
+  font-family: $font-family;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  color: $text-primary;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+
+  &:hover {
+    border-color: $accent;
+  }
+}
+
+.active {
+  background: $accent;
+  border-color: $accent;
+  color: $text-primary;
+}

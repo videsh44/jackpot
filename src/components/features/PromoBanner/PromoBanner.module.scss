@@ -1,0 +1,81 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.section {
+  margin-bottom: $spacing-md;
+}
+
+.carouselWrapper {
+  position: relative;
+}
+
+.carousel {
+  display: flex;
+  gap: 9px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  @include hide-scrollbar;
+}
+
+.banner {
+  flex-shrink: 0;
+  width: 100%;
+  min-height: 140px;
+  border-radius: $radius-md;
+  scroll-snap-align: start;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s;
+
+  @include respond-to(sm) {
+    width: calc(50% - 5px);
+    min-height: 160px;
+  }
+
+  @include respond-to(md) {
+    width: calc(33.333% - 6px);
+    min-height: 187px;
+  }
+
+  &:hover {
+    transform: scale(1.01);
+  }
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.navButton {
+  display: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  background: rgba($bg-card, 0.8);
+  backdrop-filter: blur(4px);
+  border-radius: 50%;
+  color: $text-primary;
+  transition: background-color 0.2s;
+
+  @include respond-to(md) {
+    display: flex;
+  }
+
+  &:hover {
+    background: $bg-card;
+  }
+}
+
+.navLeft {
+  left: -16px;
+}
+
+.navRight {
+  right: -16px;
+}

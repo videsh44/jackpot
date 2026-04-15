@@ -1,0 +1,24 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.lobby {
+  min-height: 100vh;
+}
+
+.main {
+  padding-top: $spacing-md;
+  padding-bottom: $spacing-2xl;
+}
+
+.container {
+  @include container;
+}
+
+.searchWrapper {
+  margin-bottom: $spacing-sm;
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+}

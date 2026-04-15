@@ -1,0 +1,42 @@
+// Neon Velocity Game Design System (from Stitch designs)
+
+// Backgrounds
+$game-bg-base: #0e0e0f;
+$game-bg-panel: #131314;
+$game-bg-container: #1a191b;
+$game-bg-high: #201f21;
+$game-bg-highest: #262627;
+$game-bg-lowest: #000000;
+$game-bg-bright: #2c2c2d;
+
+// Primary (Cyan) — used for Crash accents
+$game-primary: #81ecff;
+$game-primary-dim: #00d4ec;
+
+// Secondary (Pink) — used for Plinko accents
+$game-secondary: #ff6b9b;
+$game-secondary-dim: #e30071;
+
+// Tertiary (Green) — used for Mines accents
+$game-tertiary: #a4ffb9;
+$game-tertiary-dim: #00ed7e;
+
+// Error
+$game-error: #ff716c;
+
+// Text
+$game-text: #ffffff;
+$game-text-dim: #adaaab;
+$game-outline: #767576;
+$game-outline-variant: #484849;
+
+// Fonts
+$game-font-headline: 'Space Grotesk', sans-serif;
+$game-font-body: 'Manrope', sans-serif;
+
+// Border radius
+$game-radius-sm: 0.25rem;
+$game-radius-md: 0.5rem;
+$game-radius-lg: 0.75rem;
+$game-radius-xl: 1rem;
+$game-radius-full: 9999px;

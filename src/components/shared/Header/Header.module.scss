@@ -1,0 +1,62 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba($bg-primary, 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba($border-color, 0.5);
+}
+
+.container {
+  @include container;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+
+  @include respond-to(md) {
+    height: 64px;
+  }
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+
+  svg {
+    height: 20px;
+    width: auto;
+
+    @include respond-to(md) {
+      height: 26px;
+      width: 141px;
+    }
+  }
+}
+
+.exploreButton {
+  padding: 8px 14px;
+  background: $accent;
+  border: none;
+  border-radius: $radius-md;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: $font-family;
+  color: $text-primary;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background: $accent-hover;
+  }
+
+  @include respond-to(md) {
+    font-size: 14px;
+    padding: 8px 20px;
+  }
+}

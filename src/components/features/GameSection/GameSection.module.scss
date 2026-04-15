@@ -1,0 +1,122 @@
+@use 'sass:color';
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.section {
+  margin-bottom: $spacing-xl;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.icon {
+  font-size: 20px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 32px;
+  letter-spacing: 0.8px;
+  color: $text-primary;
+
+  @include respond-to(md) {
+    font-size: 20px;
+  }
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.viewAll {
+  padding: 8px 15px;
+  background: $bg-card;
+  border-radius: $radius-md;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0.48px;
+  color: $text-primary;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background: color.adjust($bg-card, $lightness: 5%);
+  }
+}
+
+.arrows {
+  display: none;
+
+  @include respond-to(md) {
+    display: flex;
+    gap: 4px;
+  }
+}
+
+.arrowButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  background: $bg-card;
+  border-radius: $radius-md;
+  color: $text-secondary;
+  transition: color 0.2s, background-color 0.2s;
+
+  &:hover {
+    color: $text-primary;
+    background: color.adjust($bg-card, $lightness: 5%);
+  }
+}
+
+.carouselWrapper {
+  position: relative;
+}
+
+.carousel {
+  display: flex;
+  gap: $card-gap;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding-bottom: $spacing-sm;
+  @include hide-scrollbar;
+}
+
+.cardSlot {
+  flex-shrink: 0;
+  width: 140px;
+  scroll-snap-align: start;
+
+  @include respond-to(sm) {
+    width: 155px;
+  }
+
+  @include respond-to(md) {
+    width: 170px;
+  }
+}
+
+.gradientRight {
+  position: absolute;
+  top: 0;
+  right: -1px;
+  width: 80px;
+  height: calc(100% - $spacing-sm);
+  background: linear-gradient(270deg, $bg-primary 0%, rgba($bg-primary, 0) 100%);
+  pointer-events: none;
+}

@@ -1,0 +1,25 @@
+@use '../../../styles/variables' as *;
+
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  background: $bg-card;
+  border: $card-border-width solid $border-color;
+  border-radius: $radius-md;
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 3px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+}

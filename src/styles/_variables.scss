@@ -1,0 +1,44 @@
+// Design tokens from Figma
+$bg-primary: #25222d;
+$bg-card: #332e42;
+$bg-input: #282432;
+$text-primary: #eae6f5;
+$text-secondary: #837b99;
+$accent: #7658ed;
+$accent-hover: #8a6fff;
+$border-color: #332e42;
+$favorite: #ff3366;
+$error: #ff4444;
+
+// Spacing
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+$spacing-2xl: 48px;
+
+// Border radius
+$radius-sm: 4px;
+$radius-md: 6px;
+$radius-lg: 12px;
+
+// Game card
+$card-width: 170px;
+$card-height: 227px;
+$card-border-width: 3px;
+$card-gap: 10px;
+
+// Breakpoints
+$breakpoint-sm: 480px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+$breakpoint-2xl: 1440px;
+
+// Container
+$container-max-width: 1216px;
+$container-padding: 16px;
+
+// Font
+$font-family: 'Poppins', sans-serif;

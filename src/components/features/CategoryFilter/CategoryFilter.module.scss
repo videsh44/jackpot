@@ -1,0 +1,14 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.wrapper {
+  padding: $spacing-md 0;
+  overflow-x: auto;
+  @include hide-scrollbar;
+}
+
+.filters {
+  display: flex;
+  gap: $spacing-sm;
+  padding-bottom: $spacing-sm;
+}
