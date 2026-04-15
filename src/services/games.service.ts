@@ -1,4 +1,3 @@
-import { apiFetch } from '@/lib/api';
 import { GameListParams, GamesResponse, SearchResponse } from '@/types/game';
 
 export async function getGames(
@@ -15,12 +14,35 @@ export async function getGames(
     excludeCategory: params.excludeCategory,
   };
 
-  return apiFetch<GamesResponse>('/casino/games', queryParams, signal);
+  const url = new URL('/api/casino/games', window.location.origin);
+
+  Object.entries(queryParams).forEach(([key, value]) => {
+    if (value !== undefined && value !== '') {
+      url.searchParams.set(key, String(value));
+    }
+  });
+
+  const response = await fetch(url.toString(), { signal });
+
+  if (!response.ok) {
+    throw new Error(`API error: ${response.status}`);
+  }
+
+  return response.json();
 }
 
 export async function searchGames(
   query: string,
   signal?: AbortSignal
 ): Promise<SearchResponse> {
-  return apiFetch<SearchResponse>('/casino/games/search', { query }, signal);
+  const url = new URL('/api/casino/games/search', window.location.origin);
+  url.searchParams.set('query', query);
+
+  const response = await fetch(url.toString(), { signal });
+
+  if (!response.ok) {
+    throw new Error(`API error: ${response.status}`);
+  }
+
+  return response.json();
 }
