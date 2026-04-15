@@ -355,9 +355,8 @@ export function CrashGame() {
               <input
                 type="number"
                 value={autoCashout}
-                min={1.01}
                 step={0.1}
-                onChange={(e) => setAutoCashout(Math.max(1.01, Number(e.target.value)))}
+                onChange={(e) => setAutoCashout(Number(e.target.value) || 0)}
                 className={styles.cashoutInput}
                 disabled={gameState === 'running'}
               />

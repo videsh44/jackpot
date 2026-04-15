@@ -10,6 +10,7 @@
   background: $game-bg-base;
   font-family: $game-font-body;
   color: $game-text;
+  overflow-y: auto;
 
   @include respond-to(md) {
     flex-direction: row;
@@ -19,7 +20,6 @@
 
 // Center Board Area — top on mobile
 .boardArea {
-  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,6 +43,7 @@
   }
 
   @include respond-to(md) {
+    flex: 1;
     padding: 32px;
     order: unset;
   }
@@ -271,7 +272,7 @@
   flex-direction: column;
   gap: 14px;
   border-top: 1px solid rgba($game-outline-variant, 0.1);
-  overflow-y: auto;
+  overflow-y: visible;
 
   @include respond-to(md) {
     width: 320px;
@@ -280,6 +281,7 @@
     gap: 20px;
     border-top: none;
     border-left: 1px solid rgba($game-outline-variant, 0.1);
+    overflow-y: auto;
   }
 }
 
